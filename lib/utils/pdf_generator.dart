@@ -6,26 +6,27 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-import '../models/exercise_model.dart';
+import '../models/exercise_one_model.dart';
 
 class PdfGenerator {
   static Future<File> generateExercisePdf(
-      List<ExerciseModel> exerciseModel) async {
+      List<ExerciseOneModel> exerciseModel) async {
     List<List<OptionModel>> exListWithOpt = [];
-    // var assetImage = MemoryImage(
-    //   (await rootBundle.load('assets/equation (1).png')).buffer.asUint8List(),
-    // );
 
     for (var element in exerciseModel) {
       List<OptionModel> optList = [];
       for (var option in element.options) {
         if (option.ansType == "image") {
-          var assetImg = MemoryImage(
-            (await rootBundle.load(option.ansValue)).buffer.asUint8List(),
-          );
+          // var assetImg = MemoryImage(
+          //   (await rootBundle.load(option.ansValue)).buffer.asUint8List(),
+          // );
+
+          // var assetImg = await rootBundle.loadString('assets/svg.svg');
+          // var assetImg = await rootBundle.loadString(option.ansValue);
           optList.add(OptionModel(
               ansKey: option.ansKey,
-              ansValue: assetImg,
+              ansValue: option.ansValue,
+              // ansValue: assetImg,
               ansType: option.ansType));
           // optList.add({"type": "image", "value": assetImg});
         } else {
@@ -50,21 +51,6 @@ class PdfGenerator {
         build: (context) => <Widget>[
           // buildCustomHeader(),
           SizedBox(height: 0.5 * PdfPageFormat.cm),
-
-          // Paragraph(
-          //   text:
-          //       'This is my custom font that displays also characters such as €, Ł, ...',
-          //   style: TextStyle(font: customFont, fontSize: 20),
-          // ),
-          // buildCustomHeadline(),
-          // buildLink(),
-          // ...buildBulletPoints(),
-          // Header(child: Text('My Headline')),
-          // Paragraph(text: LoremText().paragraph(60)),
-          // Paragraph(text: LoremText().paragraph(60)),
-          // Paragraph(text: LoremText().paragraph(60)),
-          // Paragraph(text: LoremText().paragraph(60)),
-          // Paragraph(text: LoremText().paragraph(60)),
 
           ...List.generate(
               exerciseModel.length,
@@ -102,53 +88,25 @@ class PdfGenerator {
                                               exListWithOpt[index][optIndex]
                                                           .ansType ==
                                                       "image"
-                                                  ? Container(
-                                                      // height: 50,
-                                                      child: Image(
-                                                          exListWithOpt[index]
-                                                                  [optIndex]
-                                                              .ansValue))
+                                                  ? Center(
+                                                      child: SvgImage(
+                                                      svg: exListWithOpt[index]
+                                                              [optIndex]
+                                                          .ansValue,
+                                                      width: 100,
+                                                    ))
+
+                                                  // ? Container(
+                                                  //     // height: 50,
+                                                  //     child: Image(
+                                                  //         exListWithOpt[index]
+                                                  //                 [optIndex]
+                                                  //             .ansValue))
                                                   : Text(exListWithOpt[index]
                                                           [optIndex]
                                                       .ansValue
                                                       .toString()),
                                             ]))
-
-                                // Row(
-                                //     mainAxisSize: MainAxisSize.min,
-                                //     mainAxisAlignment: MainAxisAlignment.center,
-                                //     crossAxisAlignment:
-                                //         CrossAxisAlignment.center,
-                                //     children: [
-                                //       Text("(A)"),
-                                //       SizedBox(width: 5.0),
-                                //       Container(
-                                //           height: 15, child: Image(assetImage)),
-                                //     ]),
-                                // Row(mainAxisSize: MainAxisSize.min, children: [
-                                //   Text("(B)"),
-                                //   SizedBox(width: 5.0),
-                                //   Container(
-                                //       height: 15, child: Image(assetImage)),
-                                // ]),
-                                // Row(mainAxisSize: MainAxisSize.min, children: [
-                                //   Text("(C)"),
-                                //   SizedBox(width: 5.0),
-                                //   Container(
-                                //       height: 15, child: Image(assetImage)),
-                                // ]),
-                                // Row(mainAxisSize: MainAxisSize.min, children: [
-                                //   Text("(D)"),
-                                //   SizedBox(width: 5.0),
-                                //   Container(
-                                //       height: 15, child: Image(assetImage)),
-                                // ]),
-                                // Row(mainAxisSize: MainAxisSize.min, children: [
-                                //   Text("(D)"),
-                                //   SizedBox(width: 5.0),
-                                //   Container(
-                                //       height: 15, child: Image(assetImage)),
-                                // ]),
                               ])
                         ]),
                   )),
@@ -167,109 +125,6 @@ class PdfGenerator {
         },
       ),
     );
-
-    // pdf.addPage(Page(
-    //     margin: const EdgeInsets.all(8.0),
-    //     build: ListView(children: [
-    //       ...List.generate(
-    //           50,
-    //           (index) => Padding(
-    //                 padding: EdgeInsets.only(bottom: 10.0),
-    //                 child: Column(children: [
-    //                   Text(
-    //                       "${index + 1}  (65)	Ô[ NaCl GF :Ol8SDF\ 10v4 mol % SrCl2 pD[ZJFDF\ VFJ[ TM pNŸEJTF VJSFXGL ;\bIF S[8,L YX[ m",
-    //                       style: const TextStyle(fontSize: 14)),
-    //                   SizedBox(height: 10.0),
-    //                   Wrap(
-    //                       spacing: 8.0, // gap between adjacent chips
-    //                       runSpacing: 4.0, // gap between lines
-    //                       // direction: Axis.horizontal,
-    //                       crossAxisAlignment: WrapCrossAlignment.center,
-    //                       children: [
-    //                         Row(
-    //                             mainAxisSize: MainAxisSize.min,
-    //                             mainAxisAlignment: MainAxisAlignment.center,
-    //                             crossAxisAlignment: CrossAxisAlignment.center,
-    //                             children: [
-    //                               Text("(A)"),
-    //                               SizedBox(width: 5.0),
-    //                               Container(
-    //                                   height: 15, child: Image(assetImage)),
-    //                             ]),
-    //                         Row(mainAxisSize: MainAxisSize.min, children: [
-    //                           Text("(B)"),
-    //                           SizedBox(width: 5.0),
-    //                           Container(height: 15, child: Image(assetImage)),
-    //                         ]),
-    //                         Row(mainAxisSize: MainAxisSize.min, children: [
-    //                           Text("(C)"),
-    //                           SizedBox(width: 5.0),
-    //                           Container(height: 15, child: Image(assetImage)),
-    //                         ]),
-    //                         Row(mainAxisSize: MainAxisSize.min, children: [
-    //                           Text("(D)"),
-    //                           SizedBox(width: 5.0),
-    //                           Container(height: 15, child: Image(assetImage)),
-    //                         ]),
-    //                         Row(mainAxisSize: MainAxisSize.min, children: [
-    //                           Text("(D)"),
-    //                           SizedBox(width: 5.0),
-    //                           Container(height: 15, child: Image(assetImage)),
-    //                         ]),
-    //                       ])
-    //                 ]),
-    //               )),
-    //     ])
-    //     // build: (context) => Column(children: [
-    //     //   ...List.generate(
-    //     //       50,
-    //     //       (index) => Padding(
-    //     //             padding: EdgeInsets.only(bottom: 10.0),
-    //     //             child: Column(children: [
-    //     //               Text(
-    //     //                   "${index + 1}  (65)	Ô[ NaCl GF :Ol8SDF\ 10v4 mol % SrCl2 pD[ZJFDF\ VFJ[ TM pNŸEJTF VJSFXGL ;\bIF S[8,L YX[ m",
-    //     //                   style: const TextStyle(fontSize: 14)),
-    //     //               SizedBox(height: 10.0),
-    //     //               Wrap(
-    //     //                   spacing: 8.0, // gap between adjacent chips
-    //     //                   runSpacing: 4.0, // gap between lines
-    //     //                   // direction: Axis.horizontal,
-    //     //                   crossAxisAlignment: WrapCrossAlignment.center,
-    //     //                   children: [
-    //     //                     Row(
-    //     //                         mainAxisSize: MainAxisSize.min,
-    //     //                         mainAxisAlignment: MainAxisAlignment.center,
-    //     //                         crossAxisAlignment: CrossAxisAlignment.center,
-    //     //                         children: [
-    //     //                           Text("(A)"),
-    //     //                           SizedBox(width: 5.0),
-    //     //                           Container(height: 15, child: Image(assetImage)),
-    //     //                         ]),
-    //     //                     Row(mainAxisSize: MainAxisSize.min, children: [
-    //     //                       Text("(B)"),
-    //     //                       SizedBox(width: 5.0),
-    //     //                       Container(height: 15, child: Image(assetImage)),
-    //     //                     ]),
-    //     //                     Row(mainAxisSize: MainAxisSize.min, children: [
-    //     //                       Text("(C)"),
-    //     //                       SizedBox(width: 5.0),
-    //     //                       Container(height: 15, child: Image(assetImage)),
-    //     //                     ]),
-    //     //                     Row(mainAxisSize: MainAxisSize.min, children: [
-    //     //                       Text("(D)"),
-    //     //                       SizedBox(width: 5.0),
-    //     //                       Container(height: 15, child: Image(assetImage)),
-    //     //                     ]),
-    //     //                     Row(mainAxisSize: MainAxisSize.min, children: [
-    //     //                       Text("(D)"),
-    //     //                       SizedBox(width: 5.0),
-    //     //                       Container(height: 15, child: Image(assetImage)),
-    //     //                     ]),
-    //     //                   ])
-    //     //             ]),
-    //     //           ))
-    //     // ]),
-    //     ));
 
     return saveDocument(name: 'my_example.pdf', pdf: pdf);
   }

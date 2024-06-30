@@ -43,6 +43,8 @@ dependencies:
   open_file: ^3.2.1
   flutter_tex: ^4.0.3+4
   flutter_easyloading: ^3.0.5
+  equatable: ^2.0.5
+  sqflite: ^2.2.4+1
 
 dev_dependencies:
   flutter_test:
